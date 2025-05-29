@@ -5,6 +5,32 @@ import { Card } from 'primereact/card';
 import { motion } from 'framer-motion';
 import L from 'leaflet';
 
+// Estilos personalizados para los controles de zoom
+const customMapStyle = `
+  .leaflet-control-container .leaflet-top {
+    top: auto !important;
+    bottom: 20px !important;
+    left: 20px !important;
+  }
+  .leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+  }
+  .leaflet-control-zoom a {
+    background-color: white !important;
+    color: #333 !important;
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 18px !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+  .leaflet-control-zoom a:hover {
+    background-color: #f0f0f0 !important;
+  }
+`;
+
 // Emoji de carrito más grande
 const carritoIcon = L.divIcon({
   html: '<div style="font-size: 28px;">🛒</div>',
@@ -27,12 +53,20 @@ const Mapa = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
+    // Inyectar los estilos personalizados
+    const styleElement = document.createElement('style');
+    styleElement.textContent = customMapStyle;
+    document.head.appendChild(styleElement);
+
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      styleElement.remove();
+    };
   }, []);
 
   const sucursales = [
