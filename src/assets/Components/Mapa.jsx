@@ -11,6 +11,8 @@ const customMapStyle = `
     top: auto !important;
     bottom: 20px !important;
     left: 20px !important;
+    position: absolute !important;
+    z-index: 400 !important;
   }
   .leaflet-control-zoom {
     border: none !important;
@@ -104,6 +106,7 @@ const Mapa = () => {
         boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
         overflow: 'hidden',
         padding: isMobile ? '10px' : '20px',
+        position: 'relative',
       }}
     >
       <Card
@@ -114,69 +117,73 @@ const Mapa = () => {
           boxShadow: 'none',
         }}
       >
-        <MapContainer
-          center={[22.993, -105.857]}
-          zoom={15}
-          scrollWheelZoom={false}
-          style={{ 
-            height: isMobile ? '300px' : '500px', 
-            width: '100%', 
-            borderRadius: isMobile ? '8px' : '12px',
-            marginBottom: isMobile ? '1rem' : '0'
-          }}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
-          />
+        <div style={{ position: 'relative' }}>
+          <MapContainer
+            center={[22.993, -105.857]}
+            zoom={15}
+            scrollWheelZoom={false}
+            style={{ 
+              height: isMobile ? '300px' : '500px', 
+              width: '100%', 
+              borderRadius: isMobile ? '8px' : '12px',
+              marginBottom: isMobile ? '1rem' : '0',
+              position: 'relative',
+              zIndex: 1
+            }}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; OpenStreetMap contributors"
+            />
 
-          {sucursales.map((sucursal, index) => (
-            <Marker
-              key={index}
-              position={sucursal.coords}
-              icon={sucursal.icon}
-            >
-              <Popup>
-                {sucursal.nombre === 'Dulcería' ? (
-                  <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#d63384', marginBottom: '4px' }}>
-                      🍬 Dulcería
+            {sucursales.map((sucursal, index) => (
+              <Marker
+                key={index}
+                position={sucursal.coords}
+                icon={sucursal.icon}
+              >
+                <Popup>
+                  {sucursal.nombre === 'Dulcería' ? (
+                    <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
+                      <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#d63384', marginBottom: '4px' }}>
+                        🍬 Dulcería
+                      </div>
+                      <div style={{ color: '#333' }}>
+                        Calle Reforma 45<br />
+                        Centro<br />
+                        82800 El Rosario, Sinaloa
+                      </div>
                     </div>
-                    <div style={{ color: '#333' }}>
-                      Calle Reforma 45<br />
-                      Centro<br />
-                      82800 El Rosario, Sinaloa
+                  ) : sucursal.nombre === 'Sucursal Los Arcos' ? (
+                    <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
+                      <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#0d6efd', marginBottom: '4px' }}>
+                        🛒 Sucursal Los Arcos
+                      </div>
+                      <div style={{ color: '#333' }}>
+                        Calle Luis Donaldo Colosio Murrieta 266<br />
+                        Presidentes<br />
+                        82802 El Rosario, Sinaloa
+                      </div>
                     </div>
-                  </div>
-                ) : sucursal.nombre === 'Sucursal Los Arcos' ? (
-                  <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#0d6efd', marginBottom: '4px' }}>
-                      🛒 Sucursal Los Arcos
+                  ) : sucursal.nombre === 'Sucursal Centro' ? (
+                    <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
+                      <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#0d6efd', marginBottom: '4px' }}>
+                        🛒 Sucursal Centro
+                      </div>
+                      <div style={{ color: '#333' }}>
+                        Calle Teofilos Noris 5<br />
+                        Centro<br />
+                        82800 El Rosario, Sinaloa
+                      </div>
                     </div>
-                    <div style={{ color: '#333' }}>
-                      Calle Luis Donaldo Colosio Murrieta 266<br />
-                      Presidentes<br />
-                      82802 El Rosario, Sinaloa
-                    </div>
-                  </div>
-                ) : sucursal.nombre === 'Sucursal Centro' ? (
-                  <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#0d6efd', marginBottom: '4px' }}>
-                      🛒 Sucursal Centro
-                    </div>
-                    <div style={{ color: '#333' }}>
-                      Calle Teofilos Noris 5<br />
-                      Centro<br />
-                      82800 El Rosario, Sinaloa
-                    </div>
-                  </div>
-                ) : (
-                  sucursal.nombre
-                )}
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+                  ) : (
+                    sucursal.nombre
+                  )}
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
       </Card>
     </motion.div>
   );
