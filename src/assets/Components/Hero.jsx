@@ -20,10 +20,10 @@ const Hero = () => {
       transition={{ duration: 0.8, ease: 'easeOut' }}
       style={{
         position: 'relative',
-        marginTop: isMobile ? '56px' : '64px',
+        top: isMobile ? '56px' : '60px',
         width: '100%',
         height: isMobile ? '30vh' : '65vh',
-        borderRadius: isMobile ? '0' : '16px',
+        borderRadius: '0',
         overflow: 'hidden',
         boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
       }}
