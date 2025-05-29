@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Card } from 'primereact/card';
@@ -24,6 +24,17 @@ const dulceIcon = L.divIcon({
 });
 
 const Mapa = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const sucursales = [
     {
       nombre: 'Sucursal Los Arcos',
@@ -51,14 +62,14 @@ const Mapa = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       style={{
-        width: '90%',
+        width: isMobile ? '100%' : '90%',
         maxWidth: '800px',
-        margin: '2rem auto',
+        margin: isMobile ? '1rem 0' : '2rem auto',
         backgroundColor: '#fff',
-        borderRadius: '12px',
+        borderRadius: isMobile ? '0' : '12px',
         boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
         overflow: 'hidden',
-        padding: '20px',
+        padding: isMobile ? '10px' : '20px',
       }}
     >
       <Card
@@ -73,7 +84,12 @@ const Mapa = () => {
           center={[22.993, -105.857]}
           zoom={15}
           scrollWheelZoom={false}
-          style={{ height: '500px', width: '100%', borderRadius: '12px' }}
+          style={{ 
+            height: isMobile ? '300px' : '500px', 
+            width: '100%', 
+            borderRadius: isMobile ? '8px' : '12px',
+            marginBottom: isMobile ? '1rem' : '0'
+          }}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -88,8 +104,8 @@ const Mapa = () => {
             >
               <Popup>
                 {sucursal.nombre === 'Dulcería' ? (
-                  <div style={{ fontSize: '14px', lineHeight: '1.5' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#d63384', marginBottom: '4px' }}>
+                  <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#d63384', marginBottom: '4px' }}>
                       🍬 Dulcería
                     </div>
                     <div style={{ color: '#333' }}>
@@ -99,8 +115,8 @@ const Mapa = () => {
                     </div>
                   </div>
                 ) : sucursal.nombre === 'Sucursal Los Arcos' ? (
-                  <div style={{ fontSize: '14px', lineHeight: '1.5' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#0d6efd', marginBottom: '4px' }}>
+                  <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#0d6efd', marginBottom: '4px' }}>
                       🛒 Sucursal Los Arcos
                     </div>
                     <div style={{ color: '#333' }}>
@@ -110,8 +126,8 @@ const Mapa = () => {
                     </div>
                   </div>
                 ) : sucursal.nombre === 'Sucursal Centro' ? (
-                  <div style={{ fontSize: '14px', lineHeight: '1.5' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#0d6efd', marginBottom: '4px' }}>
+                  <div style={{ fontSize: isMobile ? '12px' : '14px', lineHeight: '1.5' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: isMobile ? '14px' : '16px', color: '#0d6efd', marginBottom: '4px' }}>
                       🛒 Sucursal Centro
                     </div>
                     <div style={{ color: '#333' }}>
